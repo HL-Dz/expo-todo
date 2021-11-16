@@ -1,29 +1,43 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
-// import Icon from 'react-native-vector-icons/FontAwesome';
 
-const TodoItem = ({el, completeTodo}) => {
- const checkHndler = () => {
-
- }
- 
+const TodoItem = ({el, completeTodo, navigation}) => {
+  const createTwoButtonAlert = () =>
+    Alert.alert('Delete todo', '', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'Delete', onPress: () => console.log('OK Pressed') },
+    ]);
+  
  return (
   <View style={styles.todo}>
-   <CheckBox
+   {/* <CheckBox
     checked={el.checked}
     onPress={() => {completeTodo(el.key)}}
     checked={el.completed}
-    // title={el.completed ? 'Ok' : ''}
+    title={el.completed ? 'Ok' : ''}
     checkedColor='green'
-   />
-   <TouchableOpacity>
-    <Text style={styles.text}>{el.text}</Text>
-   </TouchableOpacity>
-   <Button
-    style={styles.btn_del}
-    title="Del"
-   />
+   /> */}
+   <View style={styles.wrap}>
+    <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('Todoinfo', {
+      text: el.text,
+      completed: el.completed
+    })}>
+      <Text numberOfLines={1} style={styles.text}>{el.text}</Text>
+    </TouchableOpacity>
+    <Button
+      title="Del"
+      type="outline"
+      titleStyle={{
+        color: '#db4a4a'
+      }}
+      onPress={createTwoButtonAlert}
+    />
+   </View>
   </View>
  )
 };
@@ -31,17 +45,28 @@ const TodoItem = ({el, completeTodo}) => {
 
 const styles = StyleSheet.create({
  todo: {
-   flex: 3,
+   flex: 0,
    display: 'flex',
-   flexDirection: 'row',
-   justifyContent: 'space-between',
    alignItems: 'center',
-   width: '95%'
- },
- btn_del: {
+   width: '100%',
+   padding: 5,
+   borderBottomColor: '#bbbbbb',
+   borderBottomWidth: 1
  },
  text: {
-  
+   display: 'flex',
+   marginRight: 10,
+   paddingTop: 12,
+   minWidth: '90%',
+   maxWidth: '90%',
+ },
+ wrap: {
+   display:'flex',
+   flexDirection: 'row'
+ },
+ link: {
+   display: 'flex',
+   maxWidth: '90%',
  }
 });
 
