@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { StyleSheet, FlatList, Text } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import uuid from 'react-native-uuid';
@@ -22,6 +22,26 @@ const App = () => {
       })
       setValue('');
     }
+  }
+
+  const completeTodo = (id) => {
+    // return todos.map((elem, ind) => {
+    //   if(elem.key !== id) {
+    //     return elem
+    //   } else {
+    //     return {...elem, completed: !completed}
+    //   }
+    // })
+
+    setTodos((list) => {
+      return list.map(elem => {
+        if(elem.key !== id) {
+            return elem
+          } else {
+            return {...elem, completed: !elem.completed}
+          }
+      })
+    })
   }
   
   const onChangeValue = (text) => {
@@ -52,7 +72,7 @@ const App = () => {
       <FlatList
         data={todos}
         renderItem={({item}) => (
-          <TodoItem el={item}/>
+          <TodoItem completeTodo={completeTodo} el={item}/>
         )}
       />
     </SafeAreaProvider>

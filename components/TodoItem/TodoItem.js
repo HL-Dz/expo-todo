@@ -3,15 +3,22 @@ import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
 // import Icon from 'react-native-vector-icons/FontAwesome';
 
-const TodoItem = ({el}) => {
+const TodoItem = ({el, completeTodo}) => {
+ const checkHndler = () => {
+
+ }
+ 
  return (
   <View style={styles.todo}>
    <CheckBox
     checked={el.checked}
+    onPress={() => {completeTodo(el.key)}}
+    checked={el.completed}
     // title={el.completed ? 'Ok' : ''}
+    checkedColor='green'
    />
    <TouchableOpacity>
-    <Text>{el.text}</Text>
+    <Text style={styles.text}>{el.text}</Text>
    </TouchableOpacity>
    <Button
     style={styles.btn_del}
@@ -32,6 +39,9 @@ const styles = StyleSheet.create({
    width: '95%'
  },
  btn_del: {
+ },
+ text: {
+  
  }
 });
 
