@@ -5,24 +5,32 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { NavigationContainer } from "@react-navigation/native";
 
 const Stack = createStackNavigator();
+const Navigate = ({text, todos, onChangeValue, addNewTask, completeTodo, deleteTodo}) => {
 
-const Navigate = () => {
   return <NavigationContainer>
-    <Stack.Navigator
-      // screenOptions={{
-      //   headerShown: false
-      // }}
-    >
+    <Stack.Navigator>
       <Stack.Screen
         name="Main"
-        component={Main}
         options={{title: 'Todolist'}}
-      />
+      >
+        {(props) => <Main
+          {...props} 
+          onChangeValue={onChangeValue}
+          addNewTask={addNewTask}
+          deleteTodo={deleteTodo}
+          todos={todos}
+          text={text}
+        />}
+      </Stack.Screen>
       <Stack.Screen
         name="Todoinfo"
-        component={Todoinfo}
         options={{title: 'Todoinfo'}}
-      />
+      >
+        {(props) => <Todoinfo
+         {...props}
+         completeTodo={completeTodo}
+        />}
+      </Stack.Screen>
     </Stack.Navigator>
   </NavigationContainer>
 };
