@@ -20,6 +20,7 @@ const Navigate = ({text, todos, onChangeValue, addNewTask, completeTodo, deleteT
           deleteTodo={deleteTodo}
           todos={todos}
           text={text}
+          completeTodo={completeTodo}
         />}
       </Stack.Screen>
       <Stack.Screen
@@ -28,7 +29,6 @@ const Navigate = ({text, todos, onChangeValue, addNewTask, completeTodo, deleteT
       >
         {(props) => <Todoinfo
          {...props}
-         completeTodo={completeTodo}
         />}
       </Stack.Screen>
     </Stack.Navigator>

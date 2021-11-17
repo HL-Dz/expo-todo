@@ -23,16 +23,15 @@ const App = () => {
   }
 
   const completeTodo = (id) => {
-    // setTodos((prev) => {
-    //   return prev.map((elem) => {
-    //     if(elem._id !== id) {
-    //       return elem;
-    //     } else {
-    //       return {...elem, completed: !elem.completed}
-    //     }
-    //   })
-    // })
-    console.log(id);
+    setTodos((prev) => {
+      return prev.map((elem) => {
+        if(elem._id !== id) {
+          return elem;
+        } else {
+          return {...elem, completed: !elem.completed}
+        }
+      })
+    })
   }
 
   const deleteTodo = (id) => {

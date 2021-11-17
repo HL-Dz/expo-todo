@@ -1,7 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet, FlatList } from 'react-native';
-import { Input, Button} from 'react-native-elements';
+import { Input, Button, CheckBox } from 'react-native-elements';
 import TodoItem from './TodoItem/TodoItem';
 
 const Main = ({
@@ -40,6 +40,7 @@ const Main = ({
             el={item}
             navigation={navigation}
             deleteTodo={deleteTodo}
+            completeTodo={completeTodo}
           />
         )}
       />
@@ -53,6 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   btn: {
+    backgroundColor: 'red'
   },
 });
 

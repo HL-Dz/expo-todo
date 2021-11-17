@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Text, Alert } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button, CheckBox } from 'react-native-elements';
 
-const TodoItem = ({el, navigation, deleteTodo}) => {
+const TodoItem = ({el, navigation, deleteTodo, completeTodo}) => {
   const deleteCurrentToto = () =>
     Alert.alert('Delete the task?', '', [
       {
@@ -13,23 +13,31 @@ const TodoItem = ({el, navigation, deleteTodo}) => {
     ]);
 
  return (
-  <View style={styles.todo}>
+  <View style={el.completed ? styles.todoInactive : styles.todo}>
    <View style={styles.wrap}>
-    <TouchableOpacity style={styles.link} onPress={() => navigation.navigate('Todoinfo', {
+    <CheckBox
+      checked={el.completed}
+      onPress={() => completeTodo(el._id)}
+    />
+    <TouchableOpacity color={el.completed ? 'grey' : '#000'}
+     style={styles.touch} onPress={() => navigation.navigate('Todoinfo', {
       text: el.text,
       completed: el.completed,
-      id: el._id
+      id: el._id,
+      completeTodo
     })}>
       <Text numberOfLines={1} style={styles.text}>{el.text}</Text>
     </TouchableOpacity>
-    <Button
-      title="Del"
-      type="outline"
-      titleStyle={{
-        color: '#db4a4a'
-      }}
-      onPress={deleteCurrentToto}
-    />
+    <View>
+      <Button
+        title="Del"
+        type="outline"
+        titleStyle={{
+          color: '#d67b7b'
+        }}
+        onPress={deleteCurrentToto}
+      />
+    </View>
    </View>
   </View>
  )
@@ -38,27 +46,29 @@ const TodoItem = ({el, navigation, deleteTodo}) => {
 
 const styles = StyleSheet.create({
  todo: {
-   flex: 0,
    display: 'flex',
-   alignItems: 'center',
-   width: '100%',
-   padding: 5,
-   borderBottomColor: '#bbbbbb',
-   borderBottomWidth: 1,
-   marginTop: 5,
+   marginTop: 10,
+   backgroundColor: '#fff',
+   borderRadius: 3,
+ },
+ todoInactive: {
+   display: 'flex',
+   marginTop: 10,
+   backgroundColor: '#edfced',
+   borderRadius: 3,
  },
  text: {
    display: 'flex',
-   marginRight: 10,
-   paddingTop: 12,
-   minWidth: '95%',
-   maxWidth: '95%',
+   minWidth: '85%',
+   maxWidth: '85%',
  },
  wrap: {
    display:'flex',
+   alignItems: 'center',
+   width: '90%',
    flexDirection: 'row'
  },
- link: {
+ touch: {
    display: 'flex',
    maxWidth: '90%',
  }
