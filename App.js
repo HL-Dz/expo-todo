@@ -1,25 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Stack from './navigation';
 import uuid from 'react-native-uuid';
 
 const App = () => {
   const [text, setValue] = useState('');
   const [todos, setTodos] = useState([]);
+  let clean = false;
 
   const onChangeValue = (text) => {
     setValue(text);
   }
 
-  const addNewTask = () => {
-    if(text.trim()) {
-      setTodos((list) => {
-        return [
-          {_id: uuid.v1(), completed: false, text: text},
-          ...list
-        ]
-      })
-      setValue('');
-    }
+  const addNewTask = (task) => {
+    setTodos((list) => {
+      return [
+        task,
+        ...list
+      ]
+    })
   }
 
   const completeTodo = (id) => {
@@ -39,11 +37,50 @@ const App = () => {
       return prev.filter(el => el._id !== id);
     })
   }
+
+  const getAllTasks = async () => {
+    const res = await fetch('/tasks', {
+      method: "GET",
+      headers: {
+        "Accept": "application/json"
+      }
+    })
+    if(res.ok == true) {
+      const tasks = await res.json();
+      setTodos(tasks)
+    } else {
+      console.log('Something wrong...');
+    }
+  }
+
+  const addNewTaskToServer = async (text) => {
+    const response = await  fetch('/tasks', {
+      method: 'POST',
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        text: text
+      })
+    });
+    if(response.ok === true) {
+      const task = await response.json();
+      addNewTask(task)
+    } else {
+      console.log('Something wrong');
+    }
+  }
+
+  useEffect(() => {
+    getAllTasks()
+    return () => {clean = true}
+  }, [])
   
   return (
     <Stack 
       onChangeValue={onChangeValue}
-      addNewTask={addNewTask}
+      addNewTaskToServer={addNewTaskToServer}
       completeTodo={completeTodo}
       deleteTodo={deleteTodo}
       text={text}

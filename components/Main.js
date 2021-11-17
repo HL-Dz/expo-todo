@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { Input, Button, CheckBox } from 'react-native-elements';
@@ -6,14 +6,23 @@ import TodoItem from './TodoItem/TodoItem';
 
 const Main = ({
   navigation,
-  text,
+  // text,
   todos,
-  onChangeValue,
-  addNewTask,
+  // onChangeValue,
+  addNewTaskToServer,
   deleteTodo,
   completeTodo
 }) => {
-  
+  const [text, setValue] = useState('');
+  const onChangeValue = (text) => {
+    setValue(text);
+  }
+  const handlerTask = (value) => {
+    if(value.trim()) {
+      addNewTaskToServer(value);
+      setValue('');
+    }
+  }
   return (
     <View style={styles.container}>
       <StatusBar style="light" backgroundColor="#000"/>
@@ -29,7 +38,7 @@ const Main = ({
       <Button
         color="#00B358"
         title="Add"
-        onPress={addNewTask}
+        onPress={() => handlerTask(text)}
         style={styles.btn}
       />
       <FlatList

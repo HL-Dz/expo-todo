@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { NavigationContainer } from "@react-navigation/native";
 
 const Stack = createStackNavigator();
-const Navigate = ({text, todos, onChangeValue, addNewTask, completeTodo, deleteTodo}) => {
+const Navigate = ({text, todos, onChangeValue, addNewTaskToServer, completeTodo, deleteTodo}) => {
 
   return <NavigationContainer>
     <Stack.Navigator>
@@ -15,11 +15,11 @@ const Navigate = ({text, todos, onChangeValue, addNewTask, completeTodo, deleteT
       >
         {(props) => <Main
           {...props} 
-          onChangeValue={onChangeValue}
-          addNewTask={addNewTask}
+          // onChangeValue={onChangeValue}
+          addNewTaskToServer={addNewTaskToServer}
           deleteTodo={deleteTodo}
           todos={todos}
-          text={text}
+          // text={text}
           completeTodo={completeTodo}
         />}
       </Stack.Screen>
