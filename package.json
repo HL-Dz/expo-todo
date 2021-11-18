@@ -10,10 +10,13 @@
     "eject": "expo eject",
     "server": "nodemon server.js"
   },
-  "proxy": "http://192.168.100.15:3001",
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint-config-rallycoding": "^3.2.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "expo": "~43.0.2",
     "expo-app-loading": "~1.2.1",
     "expo-status-bar": "~1.1.0",
@@ -33,7 +36,9 @@
     "react-navigation-stack": "^2.10.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.12.9",
+    "eslint": "^8.2.0",
+    "eslint-plugin-react": "^7.27.0"
   },
   "private": true
 }

@@ -1,91 +1,102 @@
-import React, { useState, useEffect } from 'react';
-import Stack from './navigation';
-import uuid from 'react-native-uuid';
+import React, { useState, useEffect } from "react";
+import Stack from "./navigation";
+
+const API = "http://192.168.100.82:5000";
 
 const App = () => {
-  const [text, setValue] = useState('');
   const [todos, setTodos] = useState([]);
-  let clean = false;
 
-  const onChangeValue = (text) => {
-    setValue(text);
-  }
-
-  const addNewTask = (task) => {
-    setTodos((list) => {
-      return [
-        task,
-        ...list
-      ]
-    })
-  }
-
-  const completeTodo = (id) => {
-    setTodos((prev) => {
-      return prev.map((elem) => {
-        if(elem._id !== id) {
-          return elem;
-        } else {
-          return {...elem, completed: !elem.completed}
-        }
-      })
-    })
-  }
-
-  const deleteTodo = (id) => {
-    setTodos(prev => {
-      return prev.filter(el => el._id !== id);
-    })
-  }
-
+  // GET ALL TASKS
   const getAllTasks = async () => {
-    const res = await fetch('/tasks', {
-      method: "GET",
-      headers: {
-        "Accept": "application/json"
-      }
-    })
-    if(res.ok == true) {
-      const tasks = await res.json();
-      setTodos(tasks)
+    const res = await fetch(`${API}/tasks`);
+    const todos = await res.json();
+    if (res.status === 200) {
+      setTodos(todos);
     } else {
-      console.log('Something wrong...');
+      console.log("Something wrong...");
     }
-  }
+  };
 
-  const addNewTaskToServer = async (text) => {
-    const response = await  fetch('/tasks', {
-      method: 'POST',
+  // ADD NEW TASK
+  const addNewTask = async (text) => {
+    const response = await fetch(`${API}/tasks`, {
+      method: "POST",
       headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        text: text
-      })
+        text: text,
+      }),
     });
-    if(response.ok === true) {
+    if (response.ok === true) {
       const task = await response.json();
-      addNewTask(task)
+      setTodos((list) => {
+        return [task, ...list];
+      });
     } else {
-      console.log('Something wrong');
+      console.log("Something wrong...");
     }
-  }
+  };
+
+  // COMPLETE THE TASK
+  const completeTodo = async (id, completed) => {
+    const res = await fetch(`${API}/tasks`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: id,
+        completed: completed,
+      }),
+    });
+
+    if (res.ok === true) {
+      const task = await res.json();
+      setTodos((prev) => {
+        return prev.map((elem) => {
+          if (elem._id !== task._id) {
+            return elem;
+          } else {
+            return { ...elem, completed: !elem.completed };
+          }
+        });
+      });
+    } else {
+      console.log("Something wrong...");
+    }
+  };
+
+  // DELETE THE TASK
+  const deleteTodo = async (id) => {
+    const res = await fetch(`${API}/tasks/${id}`, {
+      method: "DELETE",
+      headers: { Accept: "application/json" },
+    });
+
+    if (res.ok === true) {
+      const task = await res.json();
+      setTodos((prev) => {
+        return prev.filter((el) => el._id !== task._id);
+      });
+    } else {
+      console.log("Something wrong...");
+    }
+  };
 
   useEffect(() => {
-    getAllTasks()
-    return () => {clean = true}
-  }, [])
-  
+    getAllTasks();
+  }, []);
+
   return (
-    <Stack 
-      onChangeValue={onChangeValue}
-      addNewTaskToServer={addNewTaskToServer}
+    <Stack
+      addNewTask={addNewTask}
       completeTodo={completeTodo}
       deleteTodo={deleteTodo}
-      text={text}
       todos={todos}
     />
   );
-}
+};
 export default App;
