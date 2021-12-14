@@ -5,55 +5,64 @@ const API = "http://192.168.100.82:5000";
 
 const App = () => {
   const [todos, setTodos] = useState([]);
+  const [error, setError] = useState(false);
+  const [errMessage, setErrMessage] = useState('');
 
   // GET ALL TASKS
   const getAllTasks = async () => {
-    const res = await fetch(`${API}/tasks`);
-    const todos = await res.json();
-    if (res.status === 200) {
+    setError(false);
+    setErrMessage('');
+    try {
+      const res = await fetch(`${API}/tasks`);
+      const todos = await res.json();
       setTodos(todos);
-    } else {
-      console.log("Something wrong...");
+    } catch (err) {
+      setError(true);
+      setErrMessage(err.message)
     }
   };
 
   // ADD NEW TASK
   const addNewTask = async (text) => {
-    const response = await fetch(`${API}/tasks`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        text: text,
-      }),
-    });
-    if (response.ok === true) {
+    setError(false);
+    setErrMessage('');
+    try {
+      const response = await fetch(`${API}/tasks`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: text,
+        }),
+      });
       const task = await response.json();
       setTodos((list) => {
         return [task, ...list];
       });
-    } else {
-      console.log("Something wrong...");
+    } catch (errr) {
+      setError(true);
+      setErrMessage(err.message)
     }
   };
 
   // COMPLETE THE TASK
   const completeTodo = async (id, completed) => {
-    const res = await fetch(`${API}/tasks`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        completed: completed,
-      }),
-    });
-
-    if (res.ok === true) {
+    setError(false);
+    setErrMessage('');
+    try {
+      const res = await fetch(`${API}/tasks`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          completed: completed,
+        }),
+      });
       const task = await res.json();
       setTodos((prev) => {
         return prev.map((elem) => {
@@ -64,25 +73,28 @@ const App = () => {
           }
         });
       });
-    } else {
-      console.log("Something wrong...");
+    } catch (err) {
+      setError(true);
+      setErrMessage(err.message)
     }
   };
 
   // DELETE THE TASK
   const deleteTodo = async (id) => {
-    const res = await fetch(`${API}/tasks/${id}`, {
-      method: "DELETE",
-      headers: { Accept: "application/json" },
-    });
-
-    if (res.ok === true) {
+      setError(false);
+      setErrMessage('')
+    try {
+      const res = await fetch(`${API}/tasks/${id}`, {
+        method: "DELETE",
+        headers: { Accept: "application/json" },
+      });
       const task = await res.json();
       setTodos((prev) => {
         return prev.filter((el) => el._id !== task._id);
       });
-    } else {
-      console.log("Something wrong...");
+    } catch (err) {
+      setError(true);
+      setErrMessage(err.message)
     }
   };
 

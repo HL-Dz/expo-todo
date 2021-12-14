@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StatusBar } from 'expo-status-bar';
 import { View, FlatList } from "react-native";
-import { Input, Button } from "react-native-elements";
+import { Input, Button, FAB } from "react-native-elements";
 import TodoItem from "./TodoItem/TodoItem";
 import { styles } from "./MainStyles";
 
@@ -30,7 +30,6 @@ const Main = ({ navigation, todos, addNewTask, deleteTodo, completeTodo }) => {
         onChangeText={onChangeValue}
       />
       <Button
-        color="#00B358"
         title="Add"
         onPress={() => addTaskHandler(text)}
         style={styles.btn}

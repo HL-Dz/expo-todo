@@ -5,13 +5,16 @@ import { styles } from "./styles";
 
 const Todoinfo = ({ route }) => {
   return (
-    <View style={{flex: 1}}>
-      <ScrollView>
-        <View style={styles.wrap}>
+    <ScrollView>
+      <View style={styles.wrap}>
+        <View>
           <Text style={styles.text}>{route.params.text}</Text>
         </View>
-      </ScrollView>
-    </View>
+        <View style={styles.buttonWrap}>
+          <Text>Something </Text>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 

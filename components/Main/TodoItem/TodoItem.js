@@ -31,7 +31,7 @@ const TodoItem = ({ el, navigation, deleteTodo, completeTodo }) => {
             })
           }
         >
-          <Text numberOfLines={1} style={styles.text}>
+          <Text numberOfLines={2} style={styles.text}>
             {el.text}
           </Text>
         </TouchableOpacity>
